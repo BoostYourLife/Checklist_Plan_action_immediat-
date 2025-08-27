@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan d'action immédiat - Checklist</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::before {
+            content: "🎯";
+            font-size: 3em;
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            margin: 15px 0 0 0;
+            opacity: 0.95;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .deadline-alert {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .intro-text {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .action-list {
+            margin: 30px 0;
+        }
+        
+        .action-item {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin: 20px 0;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        
+        .action-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .action-item.completed {
+            background: #f8fff8;
+            border-color: #28a745;
+        }
+        
+        .action-item.completed::before {
+            background: linear-gradient(45deg, #28a745, #20c997);
+        }
+        
+        .action-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .action-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            margin-right: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .action-checkbox:hover {
+            background: #f0f4ff;
+            transform: scale(1.1);
+        }
+        
+        .action-checkbox.checked {
+            background: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+        
+        .action-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .action-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            flex-grow: 1;
+        }
+        
+        .action-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .action-inputs {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .input-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #28a745, #20c997);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin: 15px 0;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .final-action {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .final-action h3 {
+            margin: 0 0 15px 0;
+            font-size: 24px;
+        }
+        
+        .final-action p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        
+        .calendar-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 10px;
+        }
+        
+        .calendar-button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .save-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            float: right;
+            margin-top: 15px;
+        }
+        
+        .save-button:hover {
+            background: #218838;
+        }
+        
+        .warning-box {
+            background: linear-gradient(45deg, #ffd93d, #ffcd3c);
+            color: #856404;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border: 1px solid #ffeaa7;
+            font-weight: 600;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .completion-celebration {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 30px 0;
+            display: none;
+        }
+        
+        .completion-celebration.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .time-inputs {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-button {
+                margin: 10px 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Plan d'action immédiat</h1>
+            <p>4 actions à implémenter avant de passer au chapitre suivant</p>
+        </div>
+        
+        <div class="deadline-alert">
+            <strong>⏰ DEADLINE : Avant demain soir</strong>
+        </div>
+        
+        <div class="content">
+            <div class="intro-text">
+                Tu viens de cartographier tes tâches et d'identifier tes voleurs d'énergie. 
+                Maintenant, tu dois passer à l'action <strong>immédiatement</strong>. 
+                Ces 4 actions vont créer ton premier momentum vers les 10h/semaine récupérées.
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0/4 actions complétées</div>
+            
+            <div class="action-list">
+                <!-- Action 1 -->
+                <div class="action-item" data-action="1">
+                    <div class="action-header">
+                        <div class="action-checkbox" onclick="toggleAction(1)"></div>
+                        <div class="action-number">1</div>
+                        <div class="action-title">Éliminer 3 tâches LOW-VALUE</div>
+                    </div>
+                    <div class="action-description">
+                        Reprends ta cartographie du Chapitre 1. Identifie tes 3 tâches avec les scores les plus bas (≤ 5) 
+                        et <strong>supprime-les définitivement</strong> de ta to-do list aujourd'hui.
+                    </div>
+                    <div class="action-inputs">
+                        <div class="input-group">
+                            <label>Tâche LOW-VALUE n°1 à éliminer :</label>
+                            <input type="text" id="task1_1" placeholder="Ex: Vérifier les stats Instagram toutes les heures">
+                        </div>
+                        <div class="input-group">
+                            <label>Tâche LOW-VALUE n°2 à éliminer :</label>
+                            <input type="text" id="task1_2" placeholder="Ex: Réorganiser mes fichiers par couleur">
+                        </div>
+                        <div class="input-group">
+                            <label>Tâche LOW-VALUE n°3 à éliminer :</label>
+                            <input type="text" id="task1_3" placeholder="Ex: Lire tous les emails de newsletter">
+                        </div>
+                        <div class="input-group">
+                            <label>Comment vas-tu t'empêcher de les refaire ?</label>
+                            <textarea id="task1_prevention" placeholder="Ex: Supprimer l'app Instagram, bloquer les sites chronophages, désabonnement massif..."></textarea>
+                        </div>
+                    </div>
+                    <button class="save-button" onclick="saveAction(1)">✅ Action terminée</button>
+                </div>
+                
+                <!-- Action 2 -->
+                <div class="action-item" data-action="2">
+                    <div class="action-header">
+                        <div class="action-checkbox" onclick="toggleAction(2)"></div>
+                        <div class="action-number">2</div>
+                        <div class="action-title">Bloquer 2h demain pour du HIGH-VALUE</div>
+                    </div>
+                    <div class="action-description">
+                        Réserve un créneau de 2h demain matin (idéalement 9h-11h) exclusivement pour tes tâches 
+                        HIGH-VALUE (score ≥ 10). Mode avion, notifications OFF, focus total.
+                    </div>
+                    <div class="action-inputs">
+                        <div class="time-inputs">
+                            <div class="input-group">
+                                <label>Heure de début :</label>
+                                <input type="time" id="task2_start" value="09:00">
+                            </div>
+                            <div class="input-group">
+                                <label>Heure de fin :</label>
+                                <input type="time" id="task2_end" value="11:00">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Tâche HIGH-VALUE prévue :</label>
+                            <select id="task2_task">
+                                <option value="">Sélectionne ta tâche prioritaire</option>
+                                <option value="prospection">Prospection de nouveaux clients</option>
+                                <option value="creation">Création de livrables clients</option>
+                                <option value="negociation">Négociation commerciale</option>
+                                <option value="strategie">Développement stratégique</option>
+                                <option value="autre">Autre (précise ci-dessous)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Si "Autre", précise :</label>
+                            <input type="text" id="task2_custom" placeholder="Décris ta tâche HIGH-VALUE personnalisée">
+                        </div>
+                        <div class="input-group">
+                            <label>Comment vas-tu éliminer TOUTES les distractions ?</label>
+                            <textarea id="task2_focus" placeholder="Ex: Mode avion, bureau fermé, email fermé, famille prévenue..."></textarea>
+                        </div>
+                    </div>
+                    <button class="save-button" onclick="saveAction(2)">✅ Créneau bloqué</button>
+                </div>
+                
+                <!-- Action 3 -->
+                <div class="action-item" data-action="3">
+                    <div class="action-header">
+                        <div class="action-checkbox" onclick="toggleAction(3)"></div>
+                        <div class="action-number">3</div>
+                        <div class="action-title">Identifier 1 tâche à automatiser cette semaine</div>
+                    </div>
+                    <div class="action-description">
+                        Choisis UNE tâche répétitive (que tu fais au moins 3 fois/semaine) et qui a un processus clair. 
+                        Ce sera ton premier candidat pour le Chapitre 2.
+                    </div>
+                    <div class="action-inputs">
+                        <div class="input-group">
+                            <label>Tâche à automatiser :</label>
+                            <input type="text" id="task3_task" placeholder="Ex: Envoi des factures clients">
+                        </div>
+                        <div class="input-group">
+                            <label>Fréquence actuelle :</label>
+                            <select id="task3_frequency">
+                                <option value="">Combien de fois par semaine ?</option>
+                                <option value="3">3 fois par semaine</option>
+                                <option value="4">4 fois par semaine</option>
+                                <option value="5">5 fois par semaine</option>
+                                <option value="quotidien">Tous les jours</option>
+                                <option value="multiple">Plusieurs fois par jour</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Temps par occurrence :</label>
+                            <input type="number" id="task3_time" placeholder="Nombre de minutes" min="1">
+                        </div>
+                        <div class="input-group">
+                            <label>Pourquoi cette tâche en priorité ?</label>
+                            <textarea id="task3_why" placeholder="Ex: Répétitive, clairement définie, me fait perdre 2h/semaine..."></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label>Outil envisagé pour l'automatisation :</label>
+                            <select id="task3_tool">
+                                <option value="">Je découvrirai au Chapitre 2</option>
+                                <option value="zapier">Zapier (simple)</option>
+                                <option value="make">Make (visuel)</option>
+                                <option value="n8n">N8N (puissant)</option>
+                                <option value="notion">Notion (bases de données)</option>
+                                <option value="sheets">Google Sheets (calculs)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="save-button" onclick="saveAction(3)">✅ Tâche identifiée</button>
+                </div>
+                
+                <!-- Action 4 -->
+                <div class="action-item" data-action="4">
+                    <div class="action-header">
+                        <div class="action-checkbox" onclick="toggleAction(4)"></div>
+                        <div class="action-number">4</div>
+                        <div class="action-title">Lister 2 tâches à déléguer avant fin de mois</div>
+                    </div>
+                    <div class="action-description">
+                        Identifie 2 tâches que tu peux confier à un freelance ou un prestataire. 
+                        Focus sur les tâches "Facile à déléguer" de ta cartographie.
+                    </div>
+                    <div class="action-inputs">
+                        <div class="input-group">
+                            <label>Tâche n°1 à déléguer :</label>
+                            <input type="text" id="task4_task1" placeholder="Ex: Saisie comptable mensuelle">
+                        </div>
+                        <div class="input-group">
+                            <label>Profil de freelance recherché :</label>
+                            <input type="text" id="task4_profile1" placeholder="Ex: Assistant comptable, 2+ ans expérience">
+                        </div>
+                        <div class="input-group">
+                            <label>Budget mensuel estimé :</label>
+                            <input type="number" id="task4_budget1" placeholder="En euros" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Tâche n°2 à déléguer :</label>
+                            <input type="text" id="task4_task2" placeholder="Ex: Community management Instagram">
+                        </div>
+                        <div class="input-group">
+                            <label>Profil de freelance recherché :</label>
+                            <input type="text" id="task4_profile2" placeholder="Ex: Community manager, portfolio réseaux sociaux">
+                        </div>
+                        <div class="input-group">
+                            <label>Budget mensuel estimé :</label>
+                            <input type="number" id="task4_budget2" placeholder="En euros" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Première plateforme où tu vas chercher :</label>
+                            <select id="task4_platform">
+                                <option value="">Choisir une plateforme</option>
+                                <option value="malt">Malt.fr (freelances français)</option>
+                                <option value="upwork">Upwork (choix international)</option>
+                                <option value="bemyeye">BeMyEye (assistants virtuels)</option>
+                                <option value="jobteaser">JobTeaser (étudiants qualifiés)</option>
+                                <option value="reseau">Mon réseau personnel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="save-button" onclick="saveAction(4)">✅ Délégations planifiées</button>
+                </div>
+            </div>
+            
+            <div class="final-action">
+                <h3>🎯 ACTION CRITIQUE</h3>
+                <p>Note ces 4 actions dans ton agenda MAINTENANT. Avec date, heure précise et rappel.</p>
+                <p style="margin-top: 15px; font-weight: bold;">
+                    → Si tu ne le fais pas dans les 5 prochaines minutes, tu ne le feras jamais.
+                </p>
+                <button class="calendar-button" onclick="openGoogleCalendar()">📅 Ajouter à Google Calendar</button>
+                <button class="calendar-button" onclick="openOutlookCalendar()">📅 Ajouter à Outlook</button>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ STATISTIQUE BRUTALE :</strong><br>
+                94% des gens qui lisent sans appliquer immédiatement oublient tout en 1 semaine.<br>
+                Ne sois pas cette statistique.
+            </div>
+            
+            <div class="completion-celebration" id="celebration">
+                <h2>🎉 BRAVO ! Plan d'action complété</h2>
+                <p>Tu fais partie des 6% qui passent à l'action. Tu peux maintenant aborder le Chapitre 2 avec les bonnes fondations.</p>
+                <p><strong>Prochaine étape :</strong> Découvrir les 5 outils qui vont révolutionner ton quotidien.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let completedActions = JSON.parse(localStorage.getItem('completedActions')) || [];
+        let actionData = JSON.parse(localStorage.getItem('actionData')) || {};
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCompletedActions();
+            updateProgress();
+            loadActionData();
+        });
+        
+        function toggleAction(actionNumber) {
+            const checkbox = document.querySelector(`[data-action="${actionNumber}"] .action-checkbox`);
+            const actionItem = document.querySelector(`[data-action="${actionNumber}"]`);
+            
+            if (completedActions.includes(actionNumber)) {
+                // Décocher
+                completedActions = completedActions.filter(a => a !== actionNumber);
+                checkbox.classList.remove('checked');
+                checkbox.innerHTML = '';
+                actionItem.classList.remove('completed');
+            } else {
+                // Cocher
+                completedActions.push(actionNumber);
+                checkbox.classList.add('checked');
+                checkbox.innerHTML = '✓';
+                actionItem.classList.add('completed');
+            }
+            
+            localStorage.setItem('completedActions', JSON.stringify(completedActions));
+            updateProgress();
+        }
+        
+        function saveAction(actionNumber) {
+            // Sauvegarder les données de l'action
+            const actionInputs = document.querySelectorAll(`[data-action="${actionNumber}"] input, [data-action="${actionNumber}"] textarea, [data-action="${actionNumber}"] select`);
+            const data = {};
+            
+            actionInputs.forEach(input => {
+                data[input.id] = input.value;
+            });
+            
+            actionData[`action${actionNumber}`] = data;
+            localStorage.setItem('actionData', JSON.stringify(actionData));
+            
+            // Marquer comme complété
+            if (!completedActions.includes(actionNumber)) {
+                toggleAction(actionNumber);
+            }
+            
+            alert(`✅ Action ${actionNumber} sauvegardée avec succès !`);
+        }
+        
+        function loadCompletedActions() {
+            completedActions.forEach(actionNumber => {
+                const checkbox = document.querySelector(`[data-action="${actionNumber}"] .action-checkbox`);
+                const actionItem = document.querySelector(`[data-action="${actionNumber}"]`);
+                
+                checkbox.classList.add('checked');
+                checkbox.innerHTML = '✓';
+                actionItem.classList.add('completed');
+            });
+        }
+        
+        function loadActionData() {
+            Object.keys(actionData).forEach(actionKey => {
+                const data = actionData[actionKey];
+                Object.keys(data).forEach(inputId => {
+                    const input = document.getElementById(inputId);
+                    if (input) {
+                        input.value = data[inputId];
+                    }
+                });
+            });
+        }
+        
+        function updateProgress() {
+            const progress = (completedActions.length / 4) * 100;
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressFill.style.width = progress + '%';
+            progressText.textContent = `${completedActions.length}/4 actions complétées`;
+            
+            // Afficher la célébration si tout est complété
+            if (completedActions.length === 4) {
+                document.getElementById('celebration').classList.add('show');
+            } else {
+                document.getElementById('celebration').classList.remove('show');
+            }
+        }
+        
+        function openGoogleCalendar() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(9, 0, 0, 0);
+            
+            const startDate = tomorrow.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            
+            const endDate = new Date(tomorrow);
+            endDate.setHours(11, 0, 0, 0);
+            const endDateStr = endDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            
+            const title = encodeURIComponent('🎯 SESSION HIGH-VALUE (Plan d\'action immédiat)');
+            const details = encodeURIComponent(`
+Actions à réaliser avant cette session :
+1. ✅ Éliminer 3 tâches LOW-VALUE
+2. ✅ Bloquer ce créneau pour HIGH-VALUE uniquement
+3. ✅ Identifier 1 tâche à automatiser cette semaine
+4. ✅ Lister 2 tâches à déléguer avant fin de mois
+
+MODE : Avion + Notifications OFF + Focus total
+Objectif : Avancer uniquement sur du HIGH-VALUE (score ≥ 10)
+            `);
+            
+            const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDateStr}&details=${details}`;
+            window.open(url, '_blank');
+        }
+        
+        function openOutlookCalendar() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(9, 0, 0, 0);
+            
+            const startDate = tomorrow.toISOString();
+            
+            const endDate = new Date(tomorrow);
+            endDate.setHours(11, 0, 0, 0);
+            const endDateStr = endDate.toISOString();
+            
+            const title = encodeURIComponent('🎯 SESSION HIGH-VALUE (Plan d\'action immédiat)');
+            const body = encodeURIComponent(`
+Actions à réaliser avant cette session :
+1. ✅ Éliminer 3 tâches LOW-VALUE
+2. ✅ Bloquer ce créneau pour HIGH-VALUE uniquement
+3. ✅ Identifier 1 tâche à automatiser cette semaine
+4. ✅ Lister 2 tâches à déléguer avant fin de mois
+
+MODE : Avion + Notifications OFF + Focus total
+Objectif : Avancer uniquement sur du HIGH-VALUE (score ≥ 10)
+            `);
+            
+            const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&startdt=${startDate}&enddt=${endDateStr}&body=${body}`;
+            window.open(url, '_blank');
+        }
+        
+        // Auto-save toutes les 30 secondes
+        setInterval(() => {
+            const currentData = {};
+            const allInputs = document.querySelectorAll('input, textarea, select');
+            
+            allInputs.forEach(input => {
+                if (input.id) {
+                    currentData[input.id] = input.value;
+                }
+            });
+            
+            localStorage.setItem('currentFormData', JSON.stringify(currentData));
+        }, 30000);
+        
+        // Charger les données du formulaire au démarrage
+        function loadFormData() {
+            const savedData = JSON.parse(localStorage.getItem('currentFormData')) || {};
+            
+            Object.keys(savedData).forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (input && savedData[inputId]) {
+                    input.value = savedData[inputId];
+                }
+            });
+        }
+        
+        // Appeler au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFormData();
+        });
+        
+        // Export des données en JSON
+        function exportData() {
+            const exportData = {
+                completedActions: completedActions,
+                actionData: actionData,
+                exportDate: new Date().toISOString(),
+                planStatus: completedActions.length === 4 ? 'completed' : 'in-progress'
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'plan_action_immediat_' + new Date().toISOString().slice(0, 10) + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Fonction de validation avant de passer au chapitre suivant
+        function validateReadiness() {
+            if (completedActions.length < 4) {
+                alert(`⚠️ Tu n'as complété que ${completedActions.length}/4 actions. Tu dois TOUTES les faire avant de passer au chapitre suivant.`);
+                return false;
+            }
+            
+            // Vérifier que les champs critiques sont remplis
+            const criticalFields = [
+                'task1_1', 'task1_2', 'task1_3', // Tâches à éliminer
+                'task2_start', 'task2_end', 'task2_task', // Créneau HIGH-VALUE
+                'task3_task', 'task3_frequency', // Automatisation
+                'task4_task1', 'task4_task2' // Délégations
+            ];
+            
+            const emptyFields = criticalFields.filter(fieldId => {
+                const field = document.getElementById(fieldId);
+                return !field || !field.value.trim();
+            });
+            
+            if (emptyFields.length > 0) {
+                alert('⚠️ Certains champs essentiels ne sont pas remplis. Complete tout avant de continuer.');
+                return false;
+            }
+            
+            alert('✅ Parfait ! Tu es prêt pour le Chapitre 2. Toutes tes actions sont planifiées et tes fondations sont solides.');
+            return true;
+        }
+        
+        // Fonction de rappel quotidien
+        function setDailyReminder() {
+            const now = new Date();
+            const tomorrow9am = new Date();
+            tomorrow9am.setDate(now.getDate() + 1);
+            tomorrow9am.setHours(9, 0, 0, 0);
+            
+            const timeUntilReminder = tomorrow9am.getTime() - now.getTime();
+            
+            setTimeout(() => {
+                if (Notification.permission === 'granted') {
+                    new Notification('🎯 Plan d\'action immédiat', {
+                        body: 'C\'est l\'heure de ta session HIGH-VALUE ! 2h de focus sans distraction.',
+                        icon: '/favicon.ico'
+                    });
+                }
+            }, timeUntilReminder);
+        }
+        
+        // Demander la permission pour les notifications
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    setDailyReminder();
+                }
+            });
+        } else if (Notification.permission === 'granted') {
+            setDailyReminder();
+        }
+        
+        // Ajout d'un bouton d'export des données dans l'interface
+        document.addEventListener('DOMContentLoaded', function() {
+            const finalAction = document.querySelector('.final-action');
+            const exportButton = document.createElement('button');
+            exportButton.textContent = '💾 Exporter mes données';
+            exportButton.className = 'calendar-button';
+            exportButton.onclick = exportData;
+            finalAction.appendChild(exportButton);
+            
+            const validateButton = document.createElement('button');
+            validateButton.textContent = '✅ Vérifier ma préparation';
+            validateButton.className = 'calendar-button';
+            validateButton.style.background = '#28a745';
+            validateButton.onclick = validateReadiness;
+            finalAction.appendChild(validateButton);
+        });
+        
+        // Statistiques de progression
+        function getProgressStats() {
+            const totalInputs = document.querySelectorAll('input, textarea, select').length;
+            const filledInputs = Array.from(document.querySelectorAll('input, textarea, select'))
+                .filter(input => input.value && input.value.trim()).length;
+            
+            return {
+                actionsCompleted: completedActions.length,
+                totalActions: 4,
+                fieldsCompleted: filledInputs,
+                totalFields: totalInputs,
+                overallProgress: Math.round(((completedActions.length * 25) + ((filledInputs / totalInputs) * 75)))
+            };
+        }
+        
+        // Mise à jour des statistiques en temps réel
+        document.addEventListener('input', function(e) {
+            if (e.target.matches('input, textarea, select')) {
+                const stats = getProgressStats();
+                console.log('Progression globale:', stats.overallProgress + '%');
+                
+                // Sauvegarde automatique
+                const currentData = {};
+                document.querySelectorAll('input, textarea, select').forEach(input => {
+                    if (input.id) {
+                        currentData[input.id] = input.value;
+                    }
+                });
+                localStorage.setItem('currentFormData', JSON.stringify(currentData));
+            }
+        });
+    </script>
+</body>
+</html>
